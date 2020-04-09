@@ -43,9 +43,11 @@ def check(album_data):
         return HTTPError(409, 'Invalid date')
     session = connect_db()
     album = session.query(Album).filter(
-        func.lower(Album.album) == album_data['album'].lower()).first()
+        func.lower(Album.album) == album_data['album'].lower(), func.lower(Album.artist) ==
+        album_data['artist'].lower()).first()
+    print(Album.artist, album_data['artist'])
     if album:
-        return HTTPError(409, f'[{album.album}] - already in the database')
+        return HTTPError(409, f'[{album.artist}: {album.album}] - already in the database')
     return False
 
 
